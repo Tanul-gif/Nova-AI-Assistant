@@ -1,0 +1,17 @@
+# Ignore virtual environment
+venv/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore temporary test file
+tempCodeRunnerFile.py
+
+# Ignore Vosk models
+vosk-model-en-us-0.22/
+vosk-model-small-en-us-0.15/
+
+# Ignore OS/editor metadata
+.DS_Store
+*.swp
