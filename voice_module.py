@@ -16,7 +16,7 @@ rec = KaldiRecognizer(model, 16000)
 
 def speak(text):
     """Make Jarvis speak the given text."""
-    print("Jarvis:", text)
+    print("Nova:", text)
     engine.say(text)
     engine.runAndWait()
 
@@ -52,4 +52,4 @@ def listen():
         speak("An error occurred while listening.")
         print("❌ ERROR:", e)
         return ""
-
+    
