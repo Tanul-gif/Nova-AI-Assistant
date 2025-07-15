@@ -4,9 +4,10 @@
 # import torch
 import webbrowser
 import os
-# print("All libraries installed")
 from voice_module import speak, listen
 import requests
+from utils.time_utils import get_current_date,get_current_time,get_time_greeting
+
 
 def smart_open_website(site_name):
     base_domains = ['.com', '.org', '.in', '.co.in', '.net']
@@ -31,73 +32,59 @@ speak("Hello, I am Nova. how can i help you")
 while True:
     command = listen()
 
-    if "hello" in command:
-        speak("Hi there! I'm always ready.")
+    if "hello nova" in command or "hello" in command or "hi" in command:
+        speak(get_time_greeting())
+        speak("how can i help you")
     elif "your name" in command:
         speak("My name is Nova, your personal ai assistant")
     elif "exit" in command or "stop" in command or "quit" in command:
         speak("Goodbye")
         exit()
+    elif "time" in command:
+        speak(get_current_time())
+    
+    elif "date" in command:
+        speak(get_current_date())
+            
     # else:
     #     speak("you said: " + command)
     
-    elif "open" in command and "website" in command or "web site" in command:
-        speak("Which website you want to open")
-        site = listen()
-        smart_open_website(site)
-        # if site:
-        #     base_site = site.replace(" ","").lower()
-            
-        #     # try common domains
-        #     for ext in [".com",".org",".in",".co.in"]:
-        #         url = f"https://{base_site}{exit}"
-        #         try:
-        #             webbrowser.open(url)
-        #             speak(f"opening {site}")
-        #             break
-        #         except:
-        #             continue
-        #     else:
-        #         # Fallback to google search
-        #         webbrowser.open(f"https://www.google.com/search?q={site}")
-        #         speak("couldn't find exact domaain, searching on google")
-    
-    elif "open file" in command or "open folder" in command:
-        speak("Please tell me which file or folder you want to open")
-        target = listen()
-        
+    elif "open file" in command or "open folder" in command or "open florida" in command:
+        speak("Please tell me the name of the file or folder you want to open.")
+        target = listen().strip().lower()
+
         search_paths = [
-            os.path.expanduser("../Desktop"),
-            os.path.expanduser("Desktop"),
-            os.path.expanduser("D:\downloads"),
-            "D:\photos",
-            "D:"
+            "D:\\",
+            os.path.expanduser("~/Desktop"),
         ]
+
         found = False
-        
+
         for path in search_paths:
-            for root,dirs,files in os.walk(path):
-                if "file" in command:
-                    for file in files:
-                        if target.lower() in file.lower():
-                            full_path = os.path.join(root, folder)
-                            os.startfile(full_path)
-                            speak(f"opening file{file}")
-                            found = True
-                            break
-                
-                elif "folder" in command:
+            for root, dirs, files in os.walk(path):
+                if "folder" in command:
                     for folder in dirs:
-                        if target.lower() in folder.lower():
+                        if target in folder.lower():
                             full_path = os.path.join(root, folder)
                             os.startfile(full_path)
-                            speak(f"opening folder{folder}")
+                            speak(f"Opening folder {folder}")
                             found = True
                             break
-            
+                elif "file" in command:
+                    for file in files:
+                        if target in file.lower():
+                            full_path = os.path.join(root, file)
+                            os.startfile(full_path)
+                            speak(f"Opening file {file}")
+                            found = True
+                            break
+                if found:
+                    break
             if found:
                 break
-        
+
         if not found:
-            speak("sorry not found")
+            speak("Sorry, I couldn't find that.")
+
+
         
